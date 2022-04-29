@@ -1,0 +1,11 @@
+[_default]
+out = "cgraph"
+oarg = [
+    "-Ofast",
+    "-std=c++17"
+]
+l = [
+    "ncurses",
+    "tinfo"
+]
+com = "g++"
