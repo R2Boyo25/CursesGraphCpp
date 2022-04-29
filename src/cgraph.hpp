@@ -12,6 +12,7 @@ namespace cgraph {
             void addPoint(float x, float y, int color = 0);
             void increment(float amt = 1, bool crop = true);
             void draw(bool l = true);
+            std::vector<point::Point> getPoints();
 
         private:
             WINDOW* wind;

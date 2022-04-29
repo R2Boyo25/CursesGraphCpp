@@ -1,4 +1,5 @@
 #include "point.hpp"
+#include <string>
 
 namespace point {
     Point::Point(float x , float y, int color) {
@@ -9,5 +10,9 @@ namespace point {
 
     int Point::operator > (Point o) {
         return this->y > o.y;
+    }
+
+    std::string Point::toString() {
+        return "(" + std::to_string(this->x) + ", " + std::to_string(this->y) + ")";
     }
 }

@@ -89,14 +89,10 @@ namespace cgraph {
 
     void PointGraph::increment(float amt, bool crop) {
         for (int i; i <= this->points.size(); i++) {
-            auto point = points[i];
-            
-            point.x += amt;
-
-            //addstr(std::to_string(this->wdim[0]).c_str());
+            points[i].x += amt;
 
             if (crop) {
-                if (point.x > this->wdim[0]) {
+                if (points[i].x > this->wdim[0]) {
                     this->points.erase(this->points.begin() + i);
                 }
             }
@@ -116,5 +112,9 @@ namespace cgraph {
         }
 
         wrefresh(this->wind);
+    }
+
+    std::vector<point::Point> PointGraph::getPoints() {
+        return this->points;
     }
 }

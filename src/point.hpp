@@ -1,3 +1,4 @@
+#include <string>
 namespace point {
     class Point {
         public:
@@ -8,6 +9,7 @@ namespace point {
 
             Point(float x = 0, float y = 0, int color = 0);
 
+            std::string toString();
             int operator > (Point o);
     };
 }
