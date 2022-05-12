@@ -19,12 +19,12 @@ int main() {
     for (int i = 0; i < 15; i++) {
         for (int e = 0; e < 10; e++) {
             g.addPoint(0, 10 - e, 2);
-            g.increment(1, false);
+            g.increment(1);
             g.draw();
         }
         for (int e = 10; e > 0; e--) {
             g.addPoint(0, 10 - e, 3);
-            g.increment(1, false);
+            g.increment(1);
             g.draw();
         }
     }

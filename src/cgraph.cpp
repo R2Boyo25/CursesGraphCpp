@@ -1,4 +1,6 @@
 #include "cgraph.hpp"
+#include <curses.h>
+#include <string>
 
 namespace cgraph {
     PointGraph::PointGraph(WINDOW* wind, std::vector<point::Point> points) {
@@ -68,6 +70,8 @@ namespace cgraph {
             x = pnt.x;
         }
 
+        x = x + maxLength + 1;
+
         if (x > wx) {
             pnt.rem = true;
         }
@@ -83,8 +87,44 @@ namespace cgraph {
         }
     }
 
+    int followingZeros(std::string numstr) {
+        int i = 0;
+        while (numstr[numstr.size() - (i + 1)] == '0') {
+            i++;
+        }
+
+        if (numstr[numstr.size() - (i + 1)] == '.') {
+            i++;
+        }
+
+        return i;
+    }
+
+    std::string cleanFloat(std::string num) {
+        std::string nnum = num;
+        for (int i = followingZeros(num); i != 0; i--) {
+            nnum.erase(nnum.size()-1);
+        }
+
+        return nnum;
+    }
+
+    void PointGraph::updateMaxLength() {
+        int maxlen = 0;
+        for (auto& point : points) {
+            int l = cleanFloat(std::to_string(point.y)).size();
+
+            if (l > maxlen) {
+                maxlen = l;
+            }
+        }
+
+        maxLength = maxlen;
+    }
+
     void PointGraph::addPoint(float x, float y, int color) {
         this->points.push_back(point::Point(x, y, color));
+        this->updateMaxLength();
     }
 
     void PointGraph::increment(float amt, bool crop) {
@@ -99,6 +139,10 @@ namespace cgraph {
         }
     }
 
+    void PointGraph::drawLabels() {
+        int my = getmaxy(this->wind);
+    }
+
     void PointGraph::draw(bool l) {
         werase(this->wind);
         int my = getmaxy(this->wind);
@@ -110,6 +154,10 @@ namespace cgraph {
         for (auto point : points) {
             this->drawPoint(point, points, this->wdim, l);
         }
+
+        this->drawLabels();
+
+        //mvwaddstr(this->wind, 0, 0, cleanFloat(std::to_string(maxLength)).c_str());
 
         wrefresh(this->wind);
     }

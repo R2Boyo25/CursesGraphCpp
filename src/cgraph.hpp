@@ -18,10 +18,13 @@ namespace cgraph {
             WINDOW* wind;
             std::vector<point::Point> points;
             std::vector<int> wdim;
+            float maxLength = 0;
             float getMax(std::vector<point::Point> points, std::string axis = "y");
             float getMin(std::vector<point::Point> points, std::string axis = "y");
             float rng(std::vector<point::Point> points,    std::string axis = "y");
             float fit(float num, float wd, float mx, float mn);
             void drawPoint(point::Point pnt, std::vector<point::Point> points, std::vector<int> wd, bool l = true);
+            void updateMaxLength();
+            void drawLabels();
     };
 }
