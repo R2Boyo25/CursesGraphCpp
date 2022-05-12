@@ -1,39 +1,41 @@
 #include "../src/cgraph.hpp"
 #include <curses.h>
+#include <signal.h>
+#include <unistd.h>
+
+void catchSigInt(int signum) {
+    endwin();
+
+    exit(signum);
+}
 
 int main() {
     initscr();
     curs_set(0);
+    signal(SIGINT, catchSigInt);
 
     cgraph::PointGraph g = cgraph::PointGraph(stdscr);
-
-    
-    /*for (float i; i < 201; i++) {
-        g.addPoint(1, i, 3);
-        g.addPoint(1, i/2, 1);
-
-        g.increment();
-        g.draw();
-    }*/
 
     for (int i = 0; i < 15; i++) {
         for (int e = 0; e < 10; e++) {
             g.addPoint(0, 10 - e, 2);
-            g.increment();
+            g.increment(1, false);
             g.draw();
         }
         for (int e = 10; e > 0; e--) {
             g.addPoint(0, 10 - e, 3);
-            g.increment();
+            g.increment(1, false);
             g.draw();
         }
     }
 
-    refresh();
+    while (true) {
+        erase();
+        g.draw();
+        refresh();
 
-    getch();
-
-    endwin();
+        usleep(500);
+    }
 
     return 0;
 }
