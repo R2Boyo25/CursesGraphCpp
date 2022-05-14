@@ -4,6 +4,7 @@
 
 namespace cgraph {
     PointGraph::PointGraph(WINDOW* wind, std::vector<point::Point> points) {
+        start_color();
         use_default_colors();
         for (int i = 1; i <= 8; i++) {
             init_pair(i, i, i);
@@ -63,13 +64,25 @@ namespace cgraph {
         int wy = wd[1];
 
         float x = this->fit(pnt.x, wx, this->getMax(points, "x"), this->getMin(points, "x"));
-        float y = this->fit(pnt.y, wy, this->getMax(points, "y"), this->getMin(points, "y"));
+        float y;
+
+        if (this->getMin(points, "y") < 0) {
+
+            y = this->fit(pnt.y, wy - 1, this->getMax(points, "y"), this->getMin(points, "y"));
+
+        } else {
+            y = this->fit(pnt.y, wy - 1, this->getMax(points, "y"), this->getMin(points, "y"));
+
+            // TODO: fix negative numbers for y.
+
+            //y = this->fit(pnt.y - this->getMin(points, "y") + 1, wy - 1, this->getMax(points, "y") - this->getMin(points, "y") + 1, this->getMin(points, "y") - this->getMin(points, "y") + 1);
+        }
 
         float mx = this->getMax(points, "x");
         if (mx < wx) {
             x = pnt.x;
         }
-
+        
         x = x + maxLength + 1;
 
         if (x > wx) {
@@ -77,13 +90,15 @@ namespace cgraph {
         }
 
         if (l) {
-            for (int i; i <= y; i++) {
-                wattrset(this->wind, COLOR_PAIR(pnt.color));
-                auto e = mvwaddch(this->wind, wy - i, wx - x, 'a');
+            for (int i; i < y; i++) {
+                wattron(this->wind, COLOR_PAIR(pnt.color));
+                auto e = mvwaddch(this->wind, wy - i - 2 , wx - x, ACS_BLOCK);
+                wattroff(this->wind, COLOR_PAIR(pnt.color));
             }
         } else {
-            wattrset(this->wind, COLOR_PAIR(pnt.color));
-            auto e = mvwaddch(this->wind, wy - y, wx - x, 'A');
+            wattron(this->wind, COLOR_PAIR(pnt.color));
+            auto e = mvwaddch(this->wind, wy - y, wx - x, ACS_BLOCK);
+            wattroff(this->wind, COLOR_PAIR(pnt.color));
         }
     }
 

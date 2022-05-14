@@ -17,17 +17,25 @@ int main() {
     cgraph::PointGraph g = cgraph::PointGraph(stdscr);
 
     for (int i = 0; i < 15; i++) {
-        for (int e = 0; e < 10; e++) {
-            g.addPoint(0, 10 - e, 2);
+        for (int e = 0; e < 11; e++) {
+            g.addPoint(0, 11 - e, 1);
+            if (10 - e - 5 > 0 ) {
+                g.addPoint(0, 10 - e - 5, 3);
+            }
             g.increment(1);
             g.draw();
         }
-        for (int e = 10; e > 0; e--) {
-            g.addPoint(0, 10 - e, 3);
+        for (int e = 11; e > 0; e--) {
+            g.addPoint(0, 12 - e, 2);
+            if (11 - e - 5 > 0 ) {
+                g.addPoint(0, 11 - e - 5, 3);
+            }
             g.increment(1);
             g.draw();
         }
     }
+
+    //g.addPoint(5, -5, 5);
 
     while (true) {
         erase();
