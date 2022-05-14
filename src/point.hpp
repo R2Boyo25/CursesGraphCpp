@@ -11,6 +11,7 @@ namespace point {
 
             std::string toString();
             int operator > (Point o);
+            int operator < (Point o);
     };
 }
 

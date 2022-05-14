@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 namespace cgraph {
     class PointGraph {
@@ -12,7 +13,11 @@ namespace cgraph {
             void addPoint(float x, float y, int color = 0);
             void increment(float amt = 1, bool crop = true);
             void draw(bool l = true);
+
+            void setStatistics(bool s);
+            
             std::vector<point::Point> getPoints();
+            bool statistics = true;
 
         private:
             WINDOW* wind;

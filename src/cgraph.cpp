@@ -1,6 +1,4 @@
 #include "cgraph.hpp"
-#include <curses.h>
-#include <string>
 
 namespace cgraph {
     PointGraph::PointGraph(WINDOW* wind, std::vector<point::Point> points) {
@@ -124,6 +122,25 @@ namespace cgraph {
         return nnum;
     }
 
+    float median(std::vector<point::Point> v) {
+        sort(v.begin(), v.end());
+        if (v.size() % 2 == 0) {
+            return (v[v.size()/2 - 1].y + v[v.size()/2].y) / 2;
+        } else {
+            return v[v.size()/2].y;
+        }
+    }
+
+    float mean(std::vector<point::Point> v) {
+        float sum = 0;
+
+        for (auto& p: v) {
+            sum += p.y;
+        }
+
+        return sum / v.size();
+    }
+
     void PointGraph::updateMaxLength() {
         int maxlen = 0;
         for (auto& point : points) {
@@ -156,6 +173,13 @@ namespace cgraph {
 
     void PointGraph::drawLabels() {
         int my = getmaxy(this->wind);
+
+        mvwaddstr(this->wind, 0, 0, std::to_string(my).c_str());
+
+        mvwaddstr(this->wind, my - 1, 0, "Median: ");
+        waddstr(this->wind, cleanFloat(std::to_string(median(this->points))).c_str());
+        waddstr(this->wind, " Mean: ");
+        waddstr(this->wind, cleanFloat(std::to_string(mean(this->points))).c_str());
     }
 
     void PointGraph::draw(bool l) {
@@ -179,5 +203,9 @@ namespace cgraph {
 
     std::vector<point::Point> PointGraph::getPoints() {
         return this->points;
+    }
+
+    void PointGraph::setStatistics(bool s) {
+        this->statistics = s;
     }
 }
