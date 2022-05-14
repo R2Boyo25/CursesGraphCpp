@@ -123,7 +123,10 @@ namespace cgraph {
     }
 
     float median(std::vector<point::Point> v) {
-        sort(v.begin(), v.end());
+        std::sort(v.begin(), v.end(), [](point::Point a, point::Point b) {
+            return a.y > b.y;
+        });
+        
         if (v.size() % 2 == 0) {
             return (v[v.size()/2 - 1].y + v[v.size()/2].y) / 2;
         } else {
@@ -173,8 +176,6 @@ namespace cgraph {
 
     void PointGraph::drawLabels() {
         int my = getmaxy(this->wind);
-
-        mvwaddstr(this->wind, 0, 0, std::to_string(my).c_str());
 
         mvwaddstr(this->wind, my - 1, 0, "Median: ");
         waddstr(this->wind, cleanFloat(std::to_string(median(this->points))).c_str());
